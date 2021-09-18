@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<body>
+<div class="main" ng-app="myShoppingList" ng-controller="myCtrl">
+    <h1>Todo List App</h1>    
+    <div class="search">
+      <input id="myInput" type="text" placeholder="Add Todo" ng-model="addMe" onenter="addItem()">
+      <span id="add-btn" ng-click="addItem()"><i class="fas fa-plus"></i></span>
+    </div>
+    <ul>
+      <li ng-repeat="x in products">{{x}}<i ng-click="removeItem($index)" class="fas fa-trash-alt"></i></li>
+    </ul>
+    <p>{{errortext}}</p>
+</div>
+
+<script>
+var input = document.getElementById("myInput");
+
+input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("add-btn").click();
+  }
+});
+
+var app = angular.module("myShoppingList", []); 
+app.controller("myCtrl", function($scope) {
+    $scope.products = ["Milk", "Bread","Eggs"];
+    $scope.addItem = function () {
+        $scope.errortext = "";
+        if (!$scope.addMe) {return;}
+        if ($scope.products.indexOf($scope.addMe) == -1) {
+            $scope.products.push($scope.addMe);
+        } else {
+            $scope.errortext = "This item is already in your Todo List.";
+        }
+    }
+    $scope.removeItem = function (x) {   
+        $scope.products.splice(x, 1);
+    }
+});
+</script>
+</body>
+</html>
